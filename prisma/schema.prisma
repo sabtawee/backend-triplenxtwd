@@ -1,0 +1,79 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model color {
+  id         Int      @id @default(autoincrement())
+  name_color String   @db.VarChar(45)
+  picture    String   @db.LongText
+  createdAt  DateTime @default(now()) @db.Timestamp(0)
+  updatedAt  DateTime @default(now()) @db.Timestamp(0)
+}
+
+model feature_product {
+  id         Int      @id @default(autoincrement())
+  feature_pd String   @db.Text
+  barcode    String   @db.VarChar(45)
+  createdAt  DateTime @default(now()) @db.Timestamp(0)
+  updatedAt  DateTime @default(now()) @db.Timestamp(0)
+}
+
+model products {
+  id            Int      @id @default(autoincrement())
+  sku           String   @db.VarChar(45)
+  barcode       String   @db.VarChar(20)
+  pd_name       String   @db.Text
+  pd_detail     String   @db.Text
+  pd_type       String   @db.VarChar(45)
+  pd_price      String   @db.VarChar(45)
+  pd_discount   String   @db.VarChar(45)
+  pd_length     String   @db.VarChar(45)
+  pd_color      String   @db.VarChar(45)
+  pd_recom      String   @default(dbgenerated("(0)")) @db.Text
+  pd_picture    String   @db.LongText
+  pd_picture_1  String   @db.LongText
+  pd_picture_2  String   @db.LongText
+  pd_picture_3  String   @db.LongText
+  pd_picturebig String   @db.LongText
+  createdAt     DateTime @default(now()) @db.Timestamp(0)
+  updatedAt     DateTime @default(now()) @db.Timestamp(0)
+}
+
+model slogan_product {
+  id             Int      @id @default(autoincrement())
+  slogan_product String   @db.Text
+  barcode        String   @db.VarChar(45)
+  createdAt      DateTime @default(now()) @db.Timestamp(0)
+  updatedAt      DateTime @default(now()) @db.Timestamp(0)
+}
+
+model subdetail_product {
+  id         Int      @id @default(autoincrement())
+  detail_sub String   @db.Text
+  barcode    String   @db.VarChar(45)
+  createdAt  DateTime @default(now()) @db.Timestamp(0)
+  updatedAt  DateTime @default(now()) @db.Timestamp(0)
+}
+
+model usage_product {
+  id        Int      @id @default(autoincrement())
+  usage_pd  String   @db.Text
+  barcode   String   @db.VarChar(45)
+  createdAt DateTime @default(now()) @db.Timestamp(0)
+  updatedAt DateTime @default(now()) @db.Timestamp(0)
+}
+
+model images {
+  id          Int      @id @default(autoincrement())
+  title       String
+  description String
+  image       String
+  path        String
+  createdAt   DateTime @default(now()) @db.Timestamp(0)
+  updatedAt   DateTime @default(now()) @db.Timestamp(0)
+}
