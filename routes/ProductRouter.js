@@ -8,6 +8,6 @@ router.get("/recom", getProductsByReCom);
 router.get("/barcode/:barcode", getProductsByBarcode);
 router.post("/", createProduct);
 router.post("/incart", getProductInCart);
-router.get("/category", getCategorys);
+router.get("/category/:type", getCategorys);
 
 module.exports = router;

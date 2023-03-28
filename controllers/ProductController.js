@@ -14,6 +14,7 @@ const getProducts = async (req, res) => {
   }
 };
 
+
 const getProductsByReCom = async (req, res) => {
   try {
     const products = await prisma.products.findMany({
@@ -182,10 +183,47 @@ const getProductInCart = async (req, res) => {
 const getCategorys = async (req, res) => {
   try {
     //group by pd_type and get data all
-    const result = await prisma.$queryRawUnsafe(`
-    SELECT sku, barcode, pd_type, pd_name, pd_discount, pd_price, pd_detail, pd_picture FROM products GROUP BY pd_type`);
+    let params = req.params.type
+    console.log(params);
+
+    if(params === 'all'){
+      const result = await prisma.products.findMany({
+        select: {
+          sku: true,
+          barcode: true,
+          pd_type: true,
+          pd_name: true,
+          pd_discount: true,
+          pd_price: true,
+          pd_detail: true,
+          pd_picture: true,
+        }
+      })
+      console.log(result);
+      res.status(200).json(result);
+      return
+    }
+
+    const result = await prisma.products.findMany({
+      select: {
+        sku: true,
+        barcode: true,
+        pd_type: true,
+        pd_name: true,
+        pd_discount: true,
+        pd_price: true,
+        pd_detail: true,
+        pd_picture: true,
+      },
+      where: {
+        type: params
+      }
+    })
+    // const result2 = result.filter((item) => item.pd_type === params)
+    // const result = await prisma.$queryRawUnsafe(`
+    // SELECT sku, barcode, pd_type, pd_name, pd_discount, pd_price, pd_detail, pd_picture FROM products GROUP BY pd_type`);
     res.status(200).json(result);
-    console.log(result);
+    // console.log(result);
   } catch (error) {
     res.status(500).json({ error: error.message });
     console.log(error);

@@ -34,6 +34,7 @@ model products {
   pd_discount   String   @db.VarChar(45)
   pd_length     String   @db.VarChar(45)
   pd_color      String   @db.VarChar(45)
+  type          String   @db.VarChar(45)
   pd_recom      String   @default(dbgenerated("(0)")) @db.Text
   pd_picture    String   @db.LongText
   pd_picture_1  String   @db.LongText
