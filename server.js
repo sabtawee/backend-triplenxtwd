@@ -6,6 +6,9 @@ const dotenv = require("dotenv");
 const multer = require("multer");
 const path = require("path");
 
+const swaggerUi = require('swagger-ui-express')
+const swaggerFile = require('./swagger_output.json')
+
 
 const ProductRouter = require("./routes/ProductRouter");
 const ImageRouter = require("./routes/ImageRouter");
@@ -19,17 +22,15 @@ app.use(express.json());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-app.use(
-  basicAuth({
-    users: { ApiKey: "hup91P^EveCq001ba@7aR6qOan5KWmH#96NW" },
-    hallenge: true,
-    unauthorizedResponse: (req) => {
-      return req.auth
-        ? "Credentials " + req.auth.user + ":" + req.auth.password + " rejected"
-        : "No credentials provided";
-    },
-  })
-);
+const authBasic = basicAuth({
+  users: { ApiKey: "hup91P^EveCq001ba@7aR6qOan5KWmH#96NW" },
+  hallenge: true,
+  unauthorizedResponse: (req) => {
+    return req.auth
+      ? "Credentials " + req.auth.user + ":" + req.auth.password + " rejected"
+      : "No credentials provided";
+  },
+});
 
 app.use(express.static(path.join(__dirname, "uploads")));
 
@@ -51,6 +52,8 @@ const upload = multer({ storage: storage });
 app.get("/", (req, res) => {
   res.send("Hello World!");
 });
+
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerFile))
 
 app.use("/api/thaiwat", ThaiwatRouter);
 
