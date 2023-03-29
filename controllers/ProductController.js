@@ -14,7 +14,6 @@ const getProducts = async (req, res) => {
   }
 };
 
-
 const getProductsByReCom = async (req, res) => {
   try {
     const products = await prisma.products.findMany({
@@ -183,10 +182,10 @@ const getProductInCart = async (req, res) => {
 const getCategorys = async (req, res) => {
   try {
     //group by pd_type and get data all
-    let params = req.params.type
+    let params = req.params.type;
     console.log(params);
 
-    if(params === 'all'){
+    if (params === "all") {
       const result = await prisma.products.findMany({
         select: {
           sku: true,
@@ -197,11 +196,29 @@ const getCategorys = async (req, res) => {
           pd_price: true,
           pd_detail: true,
           pd_picture: true,
-        }
-      })
-      console.log(result);
-      res.status(200).json(result);
-      return
+          pd_length: true,
+        },
+      });
+      if (result.length === 0) {
+        res.status(404).json({ message: "Product not found!" });
+        return;
+      } else {
+        // fitter by pd_type no duplicate
+        const result2 = result.filter((item, index, self) => {
+          if (item.pd_length === "ตัดเมตร") {
+            console.log("ตัดเมตร");
+            return false;
+          } else {
+            return (
+              self.findIndex((t) => {
+                return t.pd_type === item.pd_type;
+              }) === index
+            );
+          }
+        });
+        res.status(200).json(result2);
+        return;
+      }
     }
 
     const result = await prisma.products.findMany({
@@ -214,16 +231,33 @@ const getCategorys = async (req, res) => {
         pd_price: true,
         pd_detail: true,
         pd_picture: true,
+        pd_length: true,
       },
       where: {
-        type: params
-      }
-    })
-    // const result2 = result.filter((item) => item.pd_type === params)
-    // const result = await prisma.$queryRawUnsafe(`
-    // SELECT sku, barcode, pd_type, pd_name, pd_discount, pd_price, pd_detail, pd_picture FROM products GROUP BY pd_type`);
-    res.status(200).json(result);
-    // console.log(result);
+        type: params,
+      },
+    });
+    if (result.length === 0) {
+      res.status(404).json({ message: "Product not found!" });
+      return;
+    } else {
+      // fitter by pd_type no duplicate and pd_length === 0
+      const result2 = result.filter((item, index, self) => {
+        if (item.pd_length === "ตัดเมตร") {
+          console.log("ตัดเมตร");
+          return false;
+        } else {
+          console.log("ไม่ตัดเมตร");
+          return (
+            self.findIndex((t) => {
+              return t.pd_type === item.pd_type;
+            }) === index
+          );
+        }
+      });
+      res.status(200).json(result2);
+      return;
+    }
   } catch (error) {
     res.status(500).json({ error: error.message });
     console.log(error);
