@@ -49,17 +49,17 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage });
 
-app.get("/", (req, res) => {
+app.get("/", authBasic, (req, res) => {
   res.send("Hello World!");
 });
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerFile))
 
-app.use("/api/thaiwat", ThaiwatRouter);
+app.use("/api/thaiwat", authBasic, ThaiwatRouter);
 
-app.use("/api/images", ImageRouter);
+app.use("/api/images", authBasic, ImageRouter);
 
-app.use("/api/products", upload.fields([
+app.use("/api/products", authBasic, upload.fields([
     {
         name: "pd_picture",
         maxCount: 1

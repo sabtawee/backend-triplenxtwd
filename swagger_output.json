@@ -10,9 +10,11 @@
       "email": "sabtawee_s@veninecable.com"
     }
   },
-  
-  "host": "localhost:3002",
+  "host": "api.veninecorp.com",
   "basePath": "/",
+  "schemes": [
+    "http", "https"
+  ],
   "paths": {
     "/": {
       "get": {

@@ -38,6 +38,27 @@ const getProductsByBarcode = async (req, res) => {
         barcode: barcode,
       },
     });
+    const color = await prisma.products.findMany({
+      select: {
+        pd_color: true,
+      },
+      where: {
+        pd_type: product[0].pd_type,
+      },
+    });
+
+    const length = await prisma.products.findMany({
+      select: {
+        pd_length: true,
+        pd_price: true,
+        pd_discount: true,
+      },
+      where: {
+        pd_type: product[0].pd_type,
+      },
+    });
+    console.log(length);
+
     const feature_product = await prisma.feature_product.findMany({
       where: {
         barcode: barcode,
@@ -68,6 +89,8 @@ const getProductsByBarcode = async (req, res) => {
         slogan_product: slogan_product,
         subdetail_product: subdetail_product,
         usage_product: usage_product,
+        color: color,
+        length: length,
       });
     }
     res.status(404).json({ message: "Product not found!" });
