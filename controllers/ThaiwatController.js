@@ -47,7 +47,7 @@ const GetProductLocation = async (req, res) => {
           "API-Key": apiKey,
         },
       };
-      const apiUrl = `https://uat-tpl.thaiwatsadu.com/api/get-product-stock`;
+      const apiUrl = `https://thaiwatsadu.com/api/get-product-stock`;
       await axios
         .get(apiUrl, { params: params, headers: config.headers })
         .then((response) => {
@@ -78,7 +78,6 @@ const GetProductLocation = async (req, res) => {
 
 const ChangeLocation = async (req, res) => {
   try {
-    console.log(req.body);
     let product_code = req.body.product_code;
     let quantity = req.body.quantity;
     let region = req.body.region;
@@ -96,7 +95,7 @@ const ChangeLocation = async (req, res) => {
       },
     };
 
-    const apiUrl = `https://uat-tpl.thaiwatsadu.com/api/post-check-stock-region`;
+    const apiUrl = `https://thaiwatsadu.com/api/post-check-stock-region`;
     await axios
       .post(apiUrl, body, { headers: config.headers })
       .then((response) => {
@@ -121,7 +120,7 @@ const ChangeLocation = async (req, res) => {
 const portProductStock = async (req, res) => {
   try {
     let product = req.body.product;
-    const ApiUrl = `https://uat-tpl.thaiwatsadu.com/api/post-products-stock`;
+    const ApiUrl = `https://thaiwatsadu.com/api/post-products-stock`;
     const config = {
       headers: {
         "API-Key": apiKey,
@@ -169,7 +168,7 @@ const portSeller = async (req, res) => {
       })
     });
 
-    const ApiUrl = `https://uat-tpl.thaiwatsadu.com/api/post-products-order`;
+    const ApiUrl = `https://thaiwatsadu.com/api/post-products-order`;
 
     const config = {
       headers: {
